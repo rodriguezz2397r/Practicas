@@ -1,0 +1,31 @@
+# Ingredientes base (todas las pizzas)
+base = ["Mozzarella", "Tomate"]
+
+# Ingredientes según tipo
+vegetarianos = ["Pimiento", "Tofu"]
+no_vegetarianos = ["Peperoni", "Jamón", "Salmón"]
+
+# Preguntar al usuario
+tipo = input("¿Quieres una pizza vegetariana? (si/no): ").lower()
+
+if tipo == "si":
+    print("\nIngredientes vegetarianos disponibles:")
+    for i, ing in enumerate(vegetarianos, 1):
+        print(i, "-", ing)
+
+    opcion = int(input("Elige un ingrediente (número): "))
+    ingrediente = vegetarianos[opcion - 1]
+
+    print("\n✅ Pizza Vegetariana")
+    print("Ingredientes:", base + [ingrediente])
+
+else:
+    print("\nIngredientes no vegetarianos disponibles:")
+    for i, ing in enumerate(no_vegetarianos, 1):
+        print(i, "-", ing)
+
+    opcion = int(input("Elige un ingrediente (número): "))
+    ingrediente = no_vegetarianos[opcion - 1]
+
+    print("\n✅ Pizza No Vegetariana")
+    print("Ingredientes:", base + [ingrediente])
