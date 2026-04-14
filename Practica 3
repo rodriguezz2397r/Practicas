@@ -1,0 +1,27 @@
+# -- MInisterio de Educación de Panamá ---
+# -- Lista de asistencia de los estudiantes de los colegios --
+# Programa para calcular porcentaje de asistencia
+
+total_estudiantes = int(input("Ingresa el total de alumnos inscritos en el colegio: "))
+asistieron_hoy  = int(input("¿Cuántos alumnos cruzaron la puerta hoy?"))
+
+#Resta: Para saber cuantos alumnos se quedaron en su casa hoy --
+faltaron = total_estudiantes - asistieron_hoy
+
+#División: Para sacar el porcentaje de asistencia --
+#Multiplicamos por 100 para que se vea como porcentaje
+porcentaje_asistencia = (asistieron_hoy / total_estudiantes) * 100
+
+#Si asistió mas del 90% es un buen dia
+es_un_buen_dia = porcentaje_asistencia > 90
+
+# Resultados
+print ("\n---Reporte General ---")
+print ("Total de estudiantes:", total_estudiantes)
+print ("Asistieron hoy:", asistieron_hoy)
+print ("Faltaron:", faltaron)
+print ("Porcentaje de asistencia:", porcentaje_asistencia, "%")
+if es_un_buen_dia:
+    print("Fue un buen día ✅")
+else:
+    print("Debe mejorar la asistencia ❌")  
