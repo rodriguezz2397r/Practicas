@@ -1,0 +1,19 @@
+#-- Un cliente quiere sacar dinero de un cajero --#
+saldo_cuenta = 10000
+cajero_limite = 5000
+monto_a_sacar = int((input("Ingrese el monto a sacar: ")))
+while monto_a_sacar > cajero_limite:
+    print("El monto ingresado excede el límite del cajero.")
+    monto_a_sacar = int((input("Ingrese el monto a sacar:")))
+if monto_a_sacar <= cajero_limite:
+    print("Retiro con exito. Por favor, tome su dinero" \
+    "Gracias por usar nuestro cajero.")
+    saldo_cuenta -= monto_a_sacar
+    if monto_a_sacar > saldo_cuenta: 
+        print("Saldo insuficiente. No se puede realizar el retiro.")
+        if monto_a_sacar <= saldo_cuenta:
+            print("Retiro con exito. Por favor, tome su dinero")
+            saldo_cuenta -= monto_a_sacar
+        else:
+            print("Saldo insuficiente. No se puede realizar el retiro.")
+        
