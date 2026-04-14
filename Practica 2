@@ -1,0 +1,35 @@
+#-- Punto de Venta Pro Noobs --#
+
+stock = 15
+precio_unitario = 50
+ganancia_total = 0
+
+print("---Bienvenido a Tech Shop")
+
+while stock > 0:
+    print(f"\Stock disponible: {stock} unidades")
+    cantidad = int(input("¿Cuántas audifonos desea comprar? (0 para cerrar caja): "))
+    
+    if cantidad == 0:
+        break
+    
+    if cantidad <= stock:
+        subtotal = cantidad * precio_unitario
+
+        #-- Lógica de descunto (Control de flujo)
+        if cantidad >= 5: 
+            descuento = subtotal * 0.10
+            total_venta  = subtotal - descuento 
+            print(f"¡Aplicado descuento del 10%! Ahorraste: $ {descuento}")
+        else:
+            total_venta = subtotal
+
+        stock -= cantidad #-- Actualizar stock --#
+        ganancia_total += total_venta #-- Acumular ganancia total --#
+        print(f"Total a pagar: $ {total_venta:.2f}")
+    else:
+        print(f" Error: No hay suficiente stock. Solo quedan {stock}.")
+
+print("\n---Cierre de caja---")
+print(f" Ganancia total: $ {ganancia_total:.2f}")
+print(f"Unidades restantes en stock: {stock}")
