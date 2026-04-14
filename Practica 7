@@ -1,0 +1,39 @@
+estudiantes = {}
+
+
+while True:
+    nombre = input("Nombre del estudiante (o 'fin' para terminar): ")
+    
+    if nombre.lower() == "fin":
+        break
+
+    habilidad = input("Habilidad (organización, diseño, tecnologia, comunicacion): ")
+    horas = int(input("Horas disponibles para ayudar: "))
+
+    estudiantes[nombre] = {
+        "habilidad": habilidad,
+        "horas": horas
+    }
+
+print("\nAsignación de tareas:")
+print("----------------------")
+
+for nombre, datos in estudiantes.items():
+    habilidad = datos["habilidad"]
+    horas = datos["horas"]
+
+    if habilidad == "organización" and horas >= 3:
+        tarea = "Logística del evento"
+    elif habilidad == "diseño":
+        tarea = "Publicidad y carteles"
+    elif habilidad == "tecnologia":
+        tarea = "Soporte técnico"
+    elif habilidad == "comunicacion":
+        tarea = "Atención al público"
+    else:
+        tarea = "Apoyo general"
+
+    print(f"{nombre} → {tarea}")
+
+
+    
