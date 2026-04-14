@@ -1,0 +1,25 @@
+# Cesta de Compras #
+
+cesta = {}
+
+while True:
+    producto = input("Introduce un producto (o escribe 'fin' para terminar): ")
+    
+    if producto.lower() == "fin":
+        break
+    
+    precio = float(input(f"Introduce el precio de {producto}: "))
+    
+    cesta[producto] = precio
+
+print("\nLista de la compra:")
+total = 0
+
+for producto, precio in cesta.items():
+    print(f"{producto} | {precio}€")
+    total += precio
+
+
+print(f"Total: {total}€")
+
+
