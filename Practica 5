@@ -1,0 +1,14 @@
+#-- Loteria --#
+numeros = []
+
+print("Ingrese los números ganadores de la lotería")
+
+for i in range(3):
+    numero = int(input(f"Número {i + 1}: "))
+    numeros.append(numero)
+
+numeros.sort()
+
+print("\nLos números ganadores son:")
+print(numeros)
+
