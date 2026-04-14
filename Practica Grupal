@@ -1,0 +1,411 @@
+import sqlite3 
+import json
+import csv
+
+# BASE DE DATOS
+
+conn = sqlite3.connect("estudiantes.db")
+cursor = conn.cursor()
+
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS estudiantes (
+    codigo INTEGER PRIMARY KEY,
+    nombre TEXT,
+    edad INTEGER,
+    grado TEXT
+)
+""")
+
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS novedades (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    codigo_estudiante INTEGER,
+    novedad TEXT
+)
+""")
+
+conn.commit()
+
+# VARIABLES GLOBALES
+
+usuarios = {
+    "rene": "1234",
+    "profesor": "abcd"
+}
+
+# DICCIONARIO DE ESTUDIANTES AQUÍ (AL MENOS 100)
+
+estudiantes = {
+1: {"nombre": "Ana", "edad": 15, "grado": "9°", "novedades": []},
+2: {"nombre": "Luis", "edad": 16, "grado": "10°", "novedades": []},
+3: {"nombre": "Maria", "edad": 14, "grado": "8°", "novedades": []},
+4: {"nombre": "Carlos", "edad": 17, "grado": "11°", "novedades": []},
+5: {"nombre": "Sofia", "edad": 15, "grado": "9°", "novedades": []},
+6: {"nombre": "Jorge", "edad": 16, "grado": "10°", "novedades": []},
+7: {"nombre": "Lucia", "edad": 14, "grado": "8°", "novedades": []},
+8: {"nombre": "Diego", "edad": 17, "grado": "11°", "novedades": []},
+9: {"nombre": "Valentina", "edad": 15, "grado": "9°", "novedades": []},
+10: {"nombre": "Andres", "edad": 16, "grado": "10°", "novedades": []},
+
+11: {"nombre": "Camila", "edad": 14, "grado": "8°", "novedades": []},
+12: {"nombre": "Santiago", "edad": 17, "grado": "11°", "novedades": []},
+13: {"nombre": "Isabella", "edad": 15, "grado": "9°", "novedades": []},
+14: {"nombre": "Matias", "edad": 16, "grado": "10°", "novedades": []},
+15: {"nombre": "Camilo", "edad": 14, "grado": "8°", "novedades": []},
+16: {"nombre": "Daniela", "edad": 17, "grado": "11°", "novedades": []},
+17: {"nombre": "Gabriel", "edad": 15, "grado": "9°", "novedades": []},
+18: {"nombre": "Natalia", "edad": 16, "grado": "10°", "novedades": []},
+19: {"nombre": "Sebastian", "edad": 14, "grado": "8°", "novedades": []},
+20: {"nombre": "Laura", "edad": 17, "grado": "11°", "novedades": []},
+
+21: {"nombre": "Juan", "edad": 15, "grado": "9°", "novedades": []},
+22: {"nombre": "Pedro", "edad": 16, "grado": "10°", "novedades": []},
+23: {"nombre": "Elena", "edad": 14, "grado": "8°", "novedades": []},
+24: {"nombre": "Miguel", "edad": 17, "grado": "11°", "novedades": []},
+25: {"nombre": "Paula", "edad": 15, "grado": "9°", "novedades": []},
+26: {"nombre": "Ricardo", "edad": 16, "grado": "10°", "novedades": []},
+27: {"nombre": "Fernanda", "edad": 14, "grado": "8°", "novedades": []},
+28: {"nombre": "Alberto", "edad": 17, "grado": "11°", "novedades": []},
+29: {"nombre": "Juliana", "edad": 15, "grado": "9°", "novedades": []},
+30: {"nombre": "Oscar", "edad": 16, "grado": "10°", "novedades": []},
+
+31: {"nombre": "Andrea", "edad": 14, "grado": "8°", "novedades": []},
+32: {"nombre": "Felipe", "edad": 17, "grado": "11°", "novedades": []},
+33: {"nombre": "Daniel", "edad": 15, "grado": "9°", "novedades": []},
+34: {"nombre": "Sara", "edad": 16, "grado": "10°", "novedades": []},
+35: {"nombre": "Tomas", "edad": 14, "grado": "8°", "novedades": []},
+36: {"nombre": "Valeria", "edad": 17, "grado": "11°", "novedades": []},
+37: {"nombre": "Hugo", "edad": 15, "grado": "9°", "novedades": []},
+38: {"nombre": "Carolina", "edad": 16, "grado": "10°", "novedades": []},
+39: {"nombre": "Ivan", "edad": 14, "grado": "8°", "novedades": []},
+40: {"nombre": "Marcos", "edad": 17, "grado": "11°", "novedades": []},
+
+41: {"nombre": "Adriana", "edad": 15, "grado": "9°", "novedades": []},
+42: {"nombre": "Brayan", "edad": 16, "grado": "10°", "novedades": []},
+43: {"nombre": "Claudia", "edad": 14, "grado": "8°", "novedades": []},
+44: {"nombre": "David", "edad": 17, "grado": "11°", "novedades": []},
+45: {"nombre": "Esteban", "edad": 15, "grado": "9°", "novedades": []},
+46: {"nombre": "Fabiana", "edad": 16, "grado": "10°", "novedades": []},
+47: {"nombre": "Gina", "edad": 14, "grado": "8°", "novedades": []},
+48: {"nombre": "Harold", "edad": 17, "grado": "11°", "novedades": []},
+49: {"nombre": "Irina", "edad": 15, "grado": "9°", "novedades": []},
+50: {"nombre": "Javier", "edad": 16, "grado": "10°", "novedades": []},
+
+51: {"nombre": "Karen", "edad": 14, "grado": "8°", "novedades": []},
+52: {"nombre": "Leonardo", "edad": 17, "grado": "11°", "novedades": []},
+53: {"nombre": "Monica", "edad": 15, "grado": "9°", "novedades": []},
+54: {"nombre": "Nicolas", "edad": 16, "grado": "10°", "novedades": []},
+55: {"nombre": "Olga", "edad": 14, "grado": "8°", "novedades": []},
+56: {"nombre": "Pablo", "edad": 17, "grado": "11°", "novedades": []},
+57: {"nombre": "Quintero", "edad": 15, "grado": "9°", "novedades": []},
+58: {"nombre": "Raul", "edad": 16, "grado": "10°", "novedades": []},
+59: {"nombre": "Silvia", "edad": 14, "grado": "8°", "novedades": []},
+60: {"nombre": "Tania", "edad": 17, "grado": "11°", "novedades": []},
+
+61: {"nombre": "Ulises", "edad": 15, "grado": "9°", "novedades": []},
+62: {"nombre": "Vanessa", "edad": 16, "grado": "10°", "novedades": []},
+63: {"nombre": "Walter", "edad": 14, "grado": "8°", "novedades": []},
+64: {"nombre": "Ximena", "edad": 17, "grado": "11°", "novedades": []},
+65: {"nombre": "Yahir", "edad": 15, "grado": "9°", "novedades": []},
+66: {"nombre": "Zulema", "edad": 16, "grado": "10°", "novedades": []},
+67: {"nombre": "Alex", "edad": 14, "grado": "8°", "novedades": []},
+68: {"nombre": "Bianca", "edad": 17, "grado": "11°", "novedades": []},
+69: {"nombre": "Cristian", "edad": 15, "grado": "9°", "novedades": []},
+70: {"nombre": "Diana", "edad": 16, "grado": "10°", "novedades": []},
+
+71: {"nombre": "Elias", "edad": 14, "grado": "8°", "novedades": []},
+72: {"nombre": "Flor", "edad": 17, "grado": "11°", "novedades": []},
+73: {"nombre": "Gustavo", "edad": 15, "grado": "9°", "novedades": []},
+74: {"nombre": "Helena", "edad": 16, "grado": "10°", "novedades": []},
+75: {"nombre": "Ian", "edad": 14, "grado": "8°", "novedades": []},
+76: {"nombre": "Julia", "edad": 17, "grado": "11°", "novedades": []},
+77: {"nombre": "Kevin", "edad": 15, "grado": "9°", "novedades": []},
+78: {"nombre": "Lina", "edad": 16, "grado": "10°", "novedades": []},
+79: {"nombre": "Mario", "edad": 14, "grado": "8°", "novedades": []},
+80: {"nombre": "Noelia", "edad": 17, "grado": "11°", "novedades": []},
+
+81: {"nombre": "Orlando", "edad": 15, "grado": "9°", "novedades": []},
+82: {"nombre": "Patricia", "edad": 16, "grado": "10°", "novedades": []},
+83: {"nombre": "Ramon", "edad": 14, "grado": "8°", "novedades": []},
+84: {"nombre": "Sandra", "edad": 17, "grado": "11°", "novedades": []},
+85: {"nombre": "Teo", "edad": 15, "grado": "9°", "novedades": []},
+86: {"nombre": "Uriel", "edad": 16, "grado": "10°", "novedades": []},
+87: {"nombre": "Violeta", "edad": 14, "grado": "8°", "novedades": []},
+88: {"nombre": "William", "edad": 17, "grado": "11°", "novedades": []},
+89: {"nombre": "Xavier", "edad": 15, "grado": "9°", "novedades": []},
+90: {"nombre": "Yolanda", "edad": 16, "grado": "10°", "novedades": []},
+
+91: {"nombre": "Zaid", "edad": 14, "grado": "8°", "novedades": []},
+92: {"nombre": "Alma", "edad": 17, "grado": "11°", "novedades": []},
+93: {"nombre": "Bruno", "edad": 15, "grado": "9°", "novedades": []},
+94: {"nombre": "Cesar", "edad": 16, "grado": "10°", "novedades": []},
+95: {"nombre": "Dario", "edad": 14, "grado": "8°", "novedades": []},
+96: {"nombre": "Elsa", "edad": 17, "grado": "11°", "novedades": []},
+97: {"nombre": "Franco", "edad": 15, "grado": "9°", "novedades": []},
+98: {"nombre": "Greta", "edad": 16, "grado": "10°", "novedades": []},
+99: {"nombre": "Hector", "edad": 14, "grado": "8°", "novedades": []},
+100: {"nombre": "Ines", "edad": 17, "grado": "11°", "novedades": []},
+
+
+}
+
+# SINCRONIZAR A BD (IMPORTANTE)
+
+
+def cargar_a_bd():
+    for codigo, datos in estudiantes.items():
+        cursor.execute(
+            "INSERT OR IGNORE INTO estudiantes VALUES (?, ?, ?, ?)",
+            (codigo, datos["nombre"], datos["edad"], datos["grado"])
+        )
+    conn.commit()
+
+cargar_a_bd()
+
+
+# FUNCIONES
+
+def iniciar_sesion(usuario, contraseña):
+    return usuarios.get(usuario) == contraseña
+
+
+def mostrar_estudiantes(lista=None):
+    print("\nLista de estudiantes:")
+
+    cursor.execute("SELECT * FROM estudiantes")
+    for fila in cursor.fetchall():
+        print(f"Codigo: {fila[0]} | Nombre: {fila[1]} | Edad: {fila[2]} | Grado: {fila[3]}")
+
+
+def agregar_estudiante(codigo, **kwargs):
+
+    estudiante = {"novedades": []}
+
+    for clave, valor in kwargs.items():
+        estudiante[clave] = valor
+
+    estudiantes[codigo] = estudiante
+
+    cursor.execute(
+        "INSERT INTO estudiantes VALUES (?, ?, ?, ?)",
+        (codigo, kwargs.get("nombre"), kwargs.get("edad"), kwargs.get("grado"))
+    )
+    conn.commit()
+
+    print("Estudiante agregado correctamente.")
+
+
+def agregar_novedades_varias(codigo, *args):
+    if codigo in estudiantes:
+        for novedad in args:
+            estudiantes[codigo]["novedades"].append(novedad)
+
+            cursor.execute(
+                "INSERT INTO novedades (codigo_estudiante, novedad) VALUES (?, ?)",
+                (codigo, novedad)
+            )
+
+        conn.commit()
+        print("Novedades agregadas correctamente.")
+    else:
+        print("Estudiante no encontrado.")
+
+
+def agregar_novedad(codigo, novedad):
+    if codigo in estudiantes:
+        estudiantes[codigo]["novedades"].append(novedad)
+
+        cursor.execute(
+            "INSERT INTO novedades (codigo_estudiante, novedad) VALUES (?, ?)",
+            (codigo, novedad)
+        )
+
+        conn.commit()
+        print("Novedad agregada.")
+    else:
+        print("Estudiante no encontrado.")
+
+
+def ver_novedades(codigo):
+    if codigo in estudiantes:
+        print(f"\nNovedades de {estudiantes[codigo]['nombre']}:")
+
+        cursor.execute(
+            "SELECT novedad FROM novedades WHERE codigo_estudiante = ?",
+            (codigo,)
+        )
+
+        for n in cursor.fetchall():
+            print("-", n[0])
+    else:
+        print("Estudiante no existe.")
+
+
+def buscar_estudiante(nombre):
+    resultado = list(
+        filter(
+            lambda item: item[1]["nombre"].lower() == nombre.lower(),
+            estudiantes.items()
+        )
+    )
+
+    if resultado:
+        mostrar_estudiantes(resultado)
+    else:
+        print("No encontrado.")
+
+
+def ordenar_por_edad():
+    ordenados = sorted(
+        estudiantes.items(),
+        key=lambda item: item[1]["edad"]
+    )
+    mostrar_estudiantes(ordenados)
+
+
+def mayores_de(edad_minima):
+    resultado = list(
+        filter(
+            lambda item: item[1]["edad"] >= edad_minima,
+            estudiantes.items()
+        )
+    )
+    mostrar_estudiantes(resultado)
+
+
+def eliminar_estudiante(codigo):
+    if estudiantes.pop(codigo, None):
+
+        cursor.execute("DELETE FROM estudiantes WHERE codigo = ?", (codigo,))
+        cursor.execute("DELETE FROM novedades WHERE codigo_estudiante = ?", (codigo,))
+        conn.commit()
+
+        print("Estudiante eliminado.")
+    else:
+        print("No existe ese estudiante.")
+
+
+def contar_por_grado(grado):
+    cantidad = len(list(filter(
+        lambda e: e["grado"] == grado,
+        estudiantes.values()
+    )))
+    print(f"Cantidad en grado {grado}: {cantidad}")
+
+
+# EXPORTACIONES
+
+def exportar_json():
+    with open("estudiantes.json", "w") as f:
+        json.dump(estudiantes, f, indent=4)
+    print("Datos exportados a JSON.")
+
+
+def exportar_csv():
+    with open("estudiantes.csv", "w", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerow(["Codigo", "Nombre", "Edad", "Grado"])
+
+        for codigo, datos in estudiantes.items():
+            writer.writerow([codigo, datos["nombre"], datos["edad"], datos["grado"]])
+
+    print("Datos exportados a CSV.")
+
+
+
+# MENU
+
+def menu():
+    while True:
+        print("""
+===== SISTEMA DE ESTUDIANTES =====
+1. Mostrar estudiantes
+2. Agregar estudiante
+3. Agregar una novedad
+4. Agregar varias novedades (*args)
+5. Ver novedades
+6. Buscar estudiante por nombre
+7. Ordenar estudiantes por edad
+8. Mostrar mayores de cierta edad
+9. Eliminar estudiante
+10. Contar estudiantes por grado
+11. Exportar JSON
+12. Exportar CSV
+13. Salir
+""")
+
+        opcion = input("Seleccione una opcion: ")
+
+        if opcion == "1":
+            mostrar_estudiantes()
+
+        elif opcion == "2":
+            codigo = int(input("Codigo: "))
+            nombre = input("Nombre: ")
+            edad = int(input("Edad: "))
+            grado = input("Grado: ")
+
+            agregar_estudiante(codigo, nombre=nombre, edad=edad, grado=grado)
+
+        elif opcion == "3":
+            codigo = int(input("Codigo: "))
+            novedad = input("Novedad: ")
+            agregar_novedad(codigo, novedad)
+
+        elif opcion == "4":
+            codigo = int(input("Codigo: "))
+            texto = input("Novedades separadas por coma: ")
+            agregar_novedades_varias(codigo, *texto.split(","))
+
+        elif opcion == "5":
+            codigo = int(input("Codigo: "))
+            ver_novedades(codigo)
+
+        elif opcion == "6":
+            nombre = input("Nombre a buscar: ")
+            buscar_estudiante(nombre)
+
+        elif opcion == "7":
+            ordenar_por_edad()
+
+        elif opcion == "8":
+            edad = int(input("Edad minima: "))
+            mayores_de(edad)
+
+        elif opcion == "9":
+            codigo = int(input("Codigo a eliminar: "))
+            eliminar_estudiante(codigo)
+
+        elif opcion == "10":
+            grado = input("Grado: ")
+            contar_por_grado(grado)
+
+        elif opcion == "11":
+            exportar_json()
+
+        elif opcion == "12":
+            exportar_csv()
+
+        elif opcion == "13":
+            print("Cerrando programa...")
+            break
+
+        else:
+            print("Opcion invalida")
+
+
+
+# PROGRAMA PRINCIPAL
+
+print("INICIO DE SESION")
+
+usuario = input("Usuario: ")
+contraseña = input("Contraseña: ")
+
+if iniciar_sesion(usuario, contraseña):
+    print("Acceso concedido")
+    menu()
+else:
+    print("Usuario o contraseña incorrectos")
+
+conn.close()
